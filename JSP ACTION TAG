@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<body>
+	<form method="get" action="AddContoller">
+		<table>
+			<tr>
+				<td>UserName:</td>
+				<td><input type="text" name="userName" placeholder="Name"></td>
+			</tr>
+			
+			<tr>
+				<td>User Pass:</td>
+				<td><input type="text" name="userPassword" placeholder="Password"></td>
+			</tr>
+			<tr>
+				<td>
+					<input type="submit" value="Login Button" >
+				</td>
+			</tr>
+		
+		
+		</table>
+	
+	
+	</form>
+	</body>
+</html>
+-----------------------------------------
+
+<% 
+out.println("welcome page is");
+%>
+
+<%= pageContext.getAttribute("userName" ,pageContext.APPLICATION_SCOP)  %>
+
+
+<%=
+application.getAttribute("userName")
+%>
+
+<%=getServletContext().getAttribute("userName") %>
+---------------------------------
+
+
+<%@page import="mypack.UserDao" %>
+<%@page import="mypack1.User" %>
+
+<jsp:userBean id="user" class="mypack.UserDao"></jsp:userBean>
+<jsp.userBean: id="userdao" class="mypack1.UserDao"></jsp.userBean:>
+<
+
+<% 
+  String UserName=request.getParameter("UserName");
+  String UserPassword=request.getParameter("UserPassword");
+  User user=new User();
+  %>
+  <jsp:setProperty property="userName" name="user" value="<%=userName%>"/>
+    <jsp:setProperty property="userPassword" name="user" value="<%=userPassword%>"/>
+    
+    <jsp:setProperty property="userName" name="user" param="userNmae"/>
+    <jsp:setProperty property="userPassword" name="user" param="userPassword"/>
+  
+  Name is :<jsp:getProperty property="userName" name ="user"/>
+  <%
+  pageConext.setAtterbute("userName" ,userName,PageContext.APPLICATION_SCOPE);
+  %>
+  <jsp:forward page="<%= userdao.validatein(user) %>"</jsp:forward>
+ 
+ 
+ 
+  <% 
+ /* String UserName=request.getParameter("UserName");
+  String UserPassword=request.getParameter("UserPassword");
+  User user=new User();
+  user.setUserName(UserName);
+  user.setUserPassword(UserPassword);
+  UserDao userdao=new UserDao();
+  String rs=userdao.findUser(user);
+  response.sendRedirect(rs);  **/
+%> 
+
+
+-------------------------------------
+package mypack1;
+public class User {
+	private 	String userName;
+	private String userPassword;
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getUserPassword() {
+		return userPassword;
+	}
+	public void setUserPassword(String userPassword) {
+		this.userPassword = userPassword;
+	}
+	
+}
+-------------------------------------
+package mypack;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import mypack1.User;
+public class UserDao{
+  private Connection conn;
+  private PreparedStatement pst;
+  private String sql;
+  private ResultSet rs;
+	public UserDao() throws ClassNotFoundException, SQLException {
+	Class.forName("mysql.jdbc.cj.Driver");
+	conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/saquibdb\",\"root\",\"Saquib@12345");	
+	}
+	public String findUser(User user)
+	{
+    sql="select*from user1 where userName=? and userPassword=?";
+    pst=conn.prepareStatement("sql");
+    pst.setString(1,user.getUserName());
+    pst.setString(2, user.getUserName());
+    rs=pst.executeQuery();
+    if(rs.next()){
+    	return "welcome";
+    	else
+    	{
+    		return "error.jsp";
+    	}
+    }
+	}
+}
+
+
+--------------------------------------
+
+<% 
+
+out.println("error page");
+%>
