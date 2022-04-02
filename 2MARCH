@@ -1,0 +1,85 @@
+package com.saquib.controller;	
+
+	import java.io.IOException;
+	import java.io.PrintWriter;
+
+	import javax.servlet.RequestDispatcher;
+	import javax.servlet.ServletException;
+	import javax.servlet.annotation.WebServlet;
+	import javax.servlet.http.HttpServlet;
+	import javax.servlet.http.HttpServletRequest;
+	import javax.servlet.http.HttpServletResponse;
+
+
+	@WebServlet("/AddContoller")
+	public class AddContoller extends HttpServlet{
+
+		@Override
+		protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+			
+			PrintWriter out = res.getWriter();
+			String userName = req.getParameter("userName");
+			String userPassword = req.getParameter("userPassword");
+			
+			
+			if(userName.equals("admin") && userPassword.equals("pass")) {
+				req.setAttribute("saquib",userName); // key & value
+				RequestDispatcher rd = req.getRequestDispatcher("AddView");
+				rd.forward(req, res);
+				
+			}
+		}
+		
+	}
+----------------------------------------
+
+package com.saquib.view;
+	
+	import java.io.IOException;
+	import java.io.PrintWriter;
+
+	import javax.servlet.ServletException;
+	import javax.servlet.annotation.WebServlet;
+	import javax.servlet.http.HttpServlet;
+	import javax.servlet.http.HttpServletRequest;
+	import javax.servlet.http.HttpServletResponse;
+
+	@WebServlet("/AddView")
+	public class AddView extends HttpServlet{
+
+		@Override
+		protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+			
+			PrintWriter out = res.getWriter();
+			String username = (String) req.getAttribute("saquib");
+			out.println("<h1>"+"Username: "+username+"</h1>");		
+		}
+	}
+--------------------
+<!DOCTYPE html>
+<html>
+	<body>
+	<form method="get" action="AddContoller">
+		<table>
+			<tr>
+				<td>UserName:</td>
+				<td><input type="text" name="userName" placeholder="Name"></td>
+			</tr>
+			
+			<tr>
+				<td>User Pass:</td>
+				<td><input type="text" name="userPassword" placeholder="Password"></td>
+			</tr>
+			<tr>
+				<td>
+					<input type="submit" value="Login Button" >
+				</td>
+			</tr>
+		
+		
+		</table>
+	
+	
+	</form>
+	</body>
+</html>
