@@ -141,3 +141,83 @@ public class UserDao{
 
 out.println("error page");
 %>
+------------------filuplodingdownloding------------------
+<%@page import="java.io.*"%>
+<%
+String filename = "pic.png";
+String filepath = "E:/prabhdeep/";
+response.setContentType("APPLICATION/OCTET-STREAM");
+response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+FileInputStream fis = new FileInputStream(filepath + filename);
+//int data = fis.read();
+int i;
+while ((i = fis.read()) != -1) {
+	out.write(i);
+}
+fis.close();
+out.close();
+%>
+----------------------------
+<a href="add.jsp"> Download JSP File </a>
+
+
+
+
+
+
+<html>
+<body>
+<form action="add.jsp" method="post" enctype="multipart/form-data">
+Select File:<input type="file" name="fname" multiple="multiple"/><br>
+<input type="submit" value="File Uploader">
+</form>
+</body>
+</html>
+------------------
+<%@page import="com.oreilly.servlet.MultipartRequest" %>
+<%
+MultipartRequest m = new MultipartRequest(request,"E:/prabhdeep/");
+out.println("Successfully Upload");
+%>
+
+--------------------------------------
+
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>  
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>  
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"  %>  
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>  
+
+<sql:setDataSource
+
+	var="db"
+	driver="com.mysql.cj.jdbc.Driver"
+	url="jdbc:mysql://localhost:3306/prabhdeep"
+	user="root"
+	password="root"
+/>
+<sql:query 
+	dataSource="${db }"
+
+	var="rs">
+	select * from employee;
+	
+	</sql:query>
+	
+	
+	<table border="2" width="100%">
+		<tr>
+			<td>Employe No</td>
+			<td>Employe Name</td>
+			<td>Employe Sal</td>
+			
+		</tr>
+		<c:forEach var="emp" items="${rs.rows }">
+		<tr>
+			<td><c:out value="${emp.empNo}"></c:out></td>
+			<td><c:out value="${emp.empName}"></c:out></td>
+			<td><c:out value="${emp.empSal}"></c:out></td>
+		
+		</tr>
+		</c:forEach>
+	</table>
